@@ -75,7 +75,7 @@ defmodule SnitchPayments.Gateway.StripeTest do
         |> Map.put("source", "stripe")
 
       result = Stripe.parse_response(params)
-      assert result.status == "failed"
+      assert result.status == "failure"
       refute is_nil(result.error_reason)
     end
 
@@ -89,7 +89,7 @@ defmodule SnitchPayments.Gateway.StripeTest do
         |> Map.put("source", "stripe")
 
       result = Stripe.parse_response(params)
-      assert result.status == "succeeded"
+      assert result.status == "success"
       assert result.paid == true
     end
   end

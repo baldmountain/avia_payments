@@ -15,9 +15,9 @@ defmodule SnitchPayments.Gateway.RazorPayTest do
   describe "purchase/3" do
     test "successful capture with right params" do
       with_mock(HTTPoison,
-        post: fn _, _ ->
+        [post: fn (_, _) ->
           rzpay_success_response()
-        end
+        end]
       ) do
         params = %{amount: Money.new!(:INR, 20), payment_id: "pay_BMTbai06G4BN2C"}
         key_id = "rzp_test_5DVuxqOKR123pF"
@@ -29,9 +29,9 @@ defmodule SnitchPayments.Gateway.RazorPayTest do
 
     test "fails for invalid key_id, status 401" do
       with_mock(HTTPoison,
-        post: fn _, _ ->
+        [post: fn (_, _) ->
           rzpay_failure_response_401()
-        end
+        end]
       ) do
         params = %{amount: Money.new!(:INR, 20), payment_id: "pay_BMTbai06G4BN2C"}
         key_id = "rzp_test_5DVuxqOKR"
@@ -43,9 +43,9 @@ defmodule SnitchPayments.Gateway.RazorPayTest do
 
     test "fails for invalid data, status 400" do
       with_mock(HTTPoison,
-        post: fn _, _ ->
+        [post: fn (_, _) ->
           rzpay_failure_paymentid_invalid()
-        end
+        end]
       ) do
         params = %{amount: Money.new!(:INR, 20), payment_id: "pay_BMTbai06G"}
         key_id = "rzp_test_5DVuxqOKR"
@@ -62,7 +62,7 @@ defmodule SnitchPayments.Gateway.RazorPayTest do
 
       response =
         response.body
-        |> Poison.decode!()
+        |> Jason.decode!()
         |> Map.put("status", "success")
         |> Map.put("order_id", "123")
         |> Map.put("payment_id", "342")
@@ -77,7 +77,7 @@ defmodule SnitchPayments.Gateway.RazorPayTest do
 
       response =
         response.body
-        |> Poison.decode!()
+        |> Jason.decode!()
         |> Map.put("status", "failure")
         |> Map.put("order_id", "123")
         |> Map.put("payment_id", "342")

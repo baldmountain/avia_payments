@@ -65,7 +65,7 @@ defmodule SnitchPayments.Factory.Stripe do
           "failure_message" => nil,
           "invoice" => nil,
           "shipping" => nil,
-          "status" => "succeeded",
+          "status" => "success",
           "refunded" => false,
           "fraud_details" => %{},
           "description" => nil,

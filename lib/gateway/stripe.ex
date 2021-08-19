@@ -97,7 +97,8 @@ defmodule SnitchPayments.Gateway.Stripe do
       raw_response: params,
       status: @success_status,
       order_id: String.to_integer(params["order_id"]),
-      payment_id: String.to_integer(params["payment_id"])
+      payment_id: String.to_integer(params["payment_id"]),
+      paid: true
     }
   end
 end

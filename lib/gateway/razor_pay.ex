@@ -99,17 +99,17 @@ defmodule SnitchPayments.Gateway.RazorPay do
   end
 
   defp respond({:ok, %{status_code: 200, body: body}}, _) do
-    body = Poison.decode!(body)
+    body = Jason.decode!(body)
     {:ok, body}
   end
 
   defp respond({:ok, %{status_code: 401, body: body}}, transaction_id) do
-    body = body |> Poison.decode!() |> Map.put("id", transaction_id)
+    body = body |> Jason.decode!() |> Map.put("id", transaction_id)
     {:error, body}
   end
 
   defp respond({:ok, %{status_code: 400, body: body}}, transaction_id) do
-    body = body |> Poison.decode!() |> Map.put("id", transaction_id)
+    body = body |> Jason.decode!() |> Map.put("id", transaction_id)
     {:error, body}
   end
 
